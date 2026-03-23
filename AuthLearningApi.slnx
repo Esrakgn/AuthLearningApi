@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="AuthLearningApi.Api/AuthLearningApi.Api.csproj" />
+  <Project Path="AuthLearningApi.Application/AuthLearningApi.Application.csproj" />
+  <Project Path="AuthLearningApi.Domain/AuthLearningApi.Domain.csproj" />
+  <Project Path="AuthLearningApi.Infrastructure/AuthLearningApi.Infrastructure.csproj" />
+  <Project Path="AuthLearningApi.Persistence/AuthLearningApi.Persistence.csproj" />
+</Solution>
