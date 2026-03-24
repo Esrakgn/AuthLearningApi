@@ -15,3 +15,4 @@ namespace AuthLearningApi.Domain.Entities
 
     } 
 }
+//kullanıcı kavramımın ana hali

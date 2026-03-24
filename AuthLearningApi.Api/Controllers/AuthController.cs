@@ -4,6 +4,9 @@ using AuthLearningApi.Persistence.Context;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using AuthLearningApi.Application.DTOs.Auth;
+using AuthLearningApi.Infrastructure.Authentication;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 
 namespace AuthLearningApi.Api.Controllers;
@@ -11,11 +14,15 @@ namespace AuthLearningApi.Api.Controllers;
 [Route("api/[controller]")]
 [ApiController]
 public class AuthController : ControllerBase
-{ 
+{
+
+    private readonly JwtTokenGenerator _jwtTokenGenerator;
+
     private readonly AppDbContext _context;
-    public AuthController(AppDbContext context)
+    public AuthController(AppDbContext context, JwtTokenGenerator jwtTokenGenerator)
     {
         _context = context;
+        _jwtTokenGenerator = jwtTokenGenerator;
     }
 
     [HttpPost("register")]
@@ -46,10 +53,10 @@ public class AuthController : ControllerBase
 
         }
 
-         [HttpPost("login")]
-         public async Task<IActionResult> Login(LoginRequest request)
-         {
-            var user = await _context.Users.FirstOrDefaultAsync(x => x.Email == request.Email);
+    [HttpPost("login")]
+    public async Task<IActionResult> Login(LoginRequest request)
+    {
+        var user = await _context.Users.FirstOrDefaultAsync(x => x.Email == request.Email);
 
         if (user is null)
         {
@@ -61,7 +68,29 @@ public class AuthController : ControllerBase
             return BadRequest("Email or password is incorrect.");
         }
 
-        return Ok("Login successful.");
+        var tokenResponse = _jwtTokenGenerator.CreateToken(user);
+
+        return Ok(tokenResponse);
     }
 
+
+    [Authorize]
+    [HttpGet("me")]
+    public IActionResult GetMe()
+    {
+        var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        var fullName = User.FindFirst(ClaimTypes.Name)?.Value;
+        var email = User.FindFirst(ClaimTypes.Email)?.Value;
+
+        return Ok(new
+        {
+            UserId = userId,
+            FullName = fullName,
+            Email = email
+        });
+    }
+
+
 }
+
+

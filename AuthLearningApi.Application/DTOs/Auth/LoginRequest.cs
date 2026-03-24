@@ -10,3 +10,4 @@ namespace AuthLearningApi.Application.DTOs.Auth
         public string Password { get; set; }= string.Empty;
     }
 }
+//dışarıdan gelen veriler burada tutulur
