@@ -7,6 +7,8 @@ using AuthLearningApi.Application.DTOs.Auth;
 using AuthLearningApi.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using BCrypt.Net;
+using AuthLearningApi.Application.Common.Models;
 
 
 namespace AuthLearningApi.Api.Controllers;
@@ -41,7 +43,8 @@ public class AuthController : ControllerBase
         {
             FullName = request.FullName,
             Email = request.Email,
-            PasswordHash = request.Password
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword(request.Password),
+            Role = "User"
         };
 
         await _context.Users.AddAsync(user); 
@@ -63,11 +66,12 @@ public class AuthController : ControllerBase
             return BadRequest("User not found.");
         }
 
-        if (user.PasswordHash != request.Password)
+        var isPasswordValid = BCrypt.Net.BCrypt.Verify(request.Password, user.PasswordHash);
+
+        if (!isPasswordValid)
         {
             return BadRequest("Email or password is incorrect.");
         }
-
         var tokenResponse = _jwtTokenGenerator.CreateToken(user);
 
         return Ok(tokenResponse);
@@ -90,7 +94,55 @@ public class AuthController : ControllerBase
         });
     }
 
+    [Authorize(Roles = "Admin")]
+    [HttpGet("admin-only")]
+    public IActionResult AdminOnly()
+    {
+        return Ok("Welcome, Admin!");
+    }
+
+    [HttpGet("test-exception")]
+    public IActionResult TestException()
+    {
+        throw new Exception("This is a test exception.");
+    }
+
+    [Authorize(Roles = "Admin")]
+    [HttpGet("users")]
+    public async Task<IActionResult> GetUsers([FromQuery] PaginationRequest request)
+    {
+        var totalCount = await _context.Users.CountAsync();
+        var users = await _context.Users
+       .OrderBy(x => x.Id)
+       .Skip((request.PageNumber - 1) * request.PageSize)
+       .Take(request.PageSize)
+       .Select(x => new
+       {
+           x.Id,
+           x.FullName,
+           x.Email,
+           x.Role,
+           x.CreatedDate
+       })
+       .ToListAsync();
+
+        var result = new PagedResult<object>
+        {
+            PageNumber = request.PageNumber,
+            PageSize = request.PageSize,
+            TotalCount = totalCount,
+            Items = users.Cast<object>().ToList()
+        };
+
+        return Ok(result);
+    }
+
 
 }
+
+
+
+
+    }
 
 

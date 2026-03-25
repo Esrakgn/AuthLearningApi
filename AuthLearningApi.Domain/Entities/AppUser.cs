@@ -10,6 +10,8 @@ namespace AuthLearningApi.Domain.Entities
         public string FullName { get; set; } = string.Empty;
         public string Email { get; set; } = string.Empty;
         public string PasswordHash { get; set; } = string.Empty; //veritabanındı tuttuğumuz güvenli şifre sürümü 
+       
+        public string Role {  get; set; } = "User";
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
 
 

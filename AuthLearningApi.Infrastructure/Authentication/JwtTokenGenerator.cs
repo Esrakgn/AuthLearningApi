@@ -24,9 +24,11 @@ public class JwtTokenGenerator
         //token içine koyduğumuz kullanıcı bilgileri
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Name, user.FullName),
-            new Claim(ClaimTypes.Email, user.Email)
+             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+             new Claim(ClaimTypes.Name, user.FullName),
+             new Claim(ClaimTypes.Email, user.Email),
+             new Claim(ClaimTypes.Role, user.Role)
+             //kullanıcının rolünü token içine koyuyor
         };
 
         //tokenı üretirken bu key kullanılır,tokenı kontrol ederken de aynı key ile doğrulanır
