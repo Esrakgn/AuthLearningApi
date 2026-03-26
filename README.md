@@ -1,6 +1,6 @@
 # AuthLearningApi
 
-A layered ASP.NET Core Web API project built for learning authentication and authorization.
+A layered ASP.NET Core Web API project built to practice authentication, authorization, validation, logging, and pagination.
 
 ## Features
 
@@ -14,14 +14,25 @@ A layered ASP.NET Core Web API project built for learning authentication and aut
 - Serilog logging
 - Pagination
 - MSSQL with EF Core
+- Service layer structure
+
+## Tech Stack
+
+- ASP.NET Core Web API
+- Entity Framework Core
+- SQL Server / LocalDB
+- JWT Bearer Authentication
+- FluentValidation
+- Serilog
+- BCrypt.Net
 
 ## Project Structure
 
 - `AuthLearningApi.Api` - controllers, middleware, configuration
-- `AuthLearningApi.Application` - DTOs, validators, shared models
+- `AuthLearningApi.Application` - DTOs, validators, interfaces, shared models
 - `AuthLearningApi.Domain` - entities
 - `AuthLearningApi.Persistence` - DbContext and migrations
-- `AuthLearningApi.Infrastructure` - JWT and infrastructure services
+- `AuthLearningApi.Infrastructure` - JWT, services, and infrastructure logic
 
 ## Endpoints
 
@@ -33,4 +44,5 @@ A layered ASP.NET Core Web API project built for learning authentication and aut
 
 ## Notes
 
-This project was created to practice backend fundamentals such as authentication, authorization, validation, exception handling, logging, and pagination.
+This project was created as a learning project to practice backend fundamentals such as authentication, authorization, claims, validation, password hashing, exception handling, logging, and pagination.
+
