@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BCrypt.Net-Next" Version="4.1.0" />
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.5" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.16.0" />
   </ItemGroup>
@@ -14,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\AuthLearningApi.Application\AuthLearningApi.Application.csproj" />
     <ProjectReference Include="..\AuthLearningApi.Domain\AuthLearningApi.Domain.csproj" />
+    <ProjectReference Include="..\AuthLearningApi.Persistence\AuthLearningApi.Persistence.csproj" />
   </ItemGroup>
 
 </Project>

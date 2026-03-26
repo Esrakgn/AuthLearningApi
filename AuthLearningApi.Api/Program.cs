@@ -10,6 +10,8 @@ using FluentValidation.AspNetCore;
 using AuthLearningApi.Application.Validators.Auth;
 using System.Text;
 using Serilog;
+using AuthLearningApi.Application.Interfaces.Services;
+using AuthLearningApi.Infrastructure.Services;
 
 
 
@@ -35,6 +37,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
 builder.Services.AddScoped<JwtTokenGenerator>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 var jwtSettings = builder.Configuration.GetSection("Jwt").Get<JwtSettings>();
 
